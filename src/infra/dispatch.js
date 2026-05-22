@@ -3,6 +3,7 @@ import { enterProjectList } from '../actions/enterProjectList.js';
 import { enterProjectDetail } from '../actions/enterProjectDetail.js';
 import { enterTaskDetail } from '../actions/enterTaskDetail.js';
 import { changeTaskStatus } from '../actions/changeTaskStatus.js';
+import { createTask } from '../actions/createTask.js';
 
 // Interprets actions and delegates business logic.
 export function createDispatcher(store, api) {
@@ -31,6 +32,13 @@ export function createDispatcher(store, api) {
 
             case 'CHANGE_TASK_STATUS':
                 return changeTaskStatus({
+                    store,
+                    api,
+                    payload: action.payload
+                });
+
+            case 'CREATE_TASK':
+                return createTask({
                     store,
                     api,
                     payload: action.payload

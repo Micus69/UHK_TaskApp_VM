@@ -20,6 +20,7 @@ export function selectViewState(state) {
 
         auth: state.auth,
 
+        users: state.users,
         projects: state.projects,
         tasks: state.tasks,
 

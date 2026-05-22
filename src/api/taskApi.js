@@ -1,7 +1,19 @@
 import { canChangeTaskStatus as isStatusTransitionAllowed } from '../domain/taskStatusMachine.js';
-import { canChangeTaskStatus as isUserAllowedToChangeStatus } from '../domain/authorization.js';
-import { assertAuthorized, assertStatusTransition } from '../domain/invariants.js';
 
+import {
+    canChangeTaskStatus as isUserAllowedToChangeStatus,
+    canCreateTask
+} from '../domain/authorization.js';
+
+import {
+    assertAuthorized,
+    assertStatusTransition,
+    assertProjectExists,
+    assertProjectIsActive,
+    assertTaskTitle
+} from '../domain/invariants.js';
+
+// Mock API represents the authoritative data source.
 export function createTaskApi() {
     const users = [
         { id: 'u1', name: 'Project Manager', role: 'MANAGER' },
@@ -33,6 +45,8 @@ export function createTaskApi() {
         }
     ];
 
+    let nextTaskId = 2;
+
     // Returns initial application data.
     async function getInitialData() {
         return structuredClone({
@@ -48,7 +62,9 @@ export function createTaskApi() {
         const task = tasks.find(task => task.id === taskId);
 
         assertAuthorized(Boolean(user));
+        assertAuthorized(Boolean(task));
         assertAuthorized(isUserAllowedToChangeStatus(user, task));
+
         assertStatusTransition(
             isStatusTransitionAllowed(task.status, newStatus)
         );
@@ -60,8 +76,40 @@ export function createTaskApi() {
         });
     }
 
+    // Creates task and enforces project/task business rules.
+    async function createTask({ userId, projectId, title, description, assigneeId, priority, dueDate }) {
+        const user = users.find(user => user.id === userId);
+        const project = projects.find(project => project.id === projectId);
+
+        assertAuthorized(Boolean(user));
+        assertAuthorized(canCreateTask(user));
+        assertProjectExists(project);
+        assertProjectIsActive(project);
+        assertTaskTitle(title);
+
+        const task = {
+            id: `t${nextTaskId}`,
+            projectId,
+            title: title.trim(),
+            description: description.trim(),
+            assigneeId,
+            status: 'TODO',
+            priority,
+            createdBy: userId,
+            dueDate
+        };
+
+        nextTaskId += 1;
+        tasks.push(task);
+
+        return structuredClone({
+            tasks
+        });
+    }
+
     return {
         getInitialData,
-        changeTaskStatus
+        changeTaskStatus,
+        createTask
     };
 }

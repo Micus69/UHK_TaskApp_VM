@@ -1,7 +1,15 @@
+import { TaskFormView } from './TaskFormView.js';
+
 // Renders project detail screen.
 export function ProjectDetailView({ viewState, handlers }) {
 
     const container = document.createElement('section');
+
+    if (!viewState.selectedProject) {
+        const error = document.createElement('p');
+        error.textContent = 'Selected project was not found.';
+        return error;
+    }
 
     const title = document.createElement('h2');
     title.textContent = viewState.selectedProject.name;
@@ -44,6 +52,13 @@ export function ProjectDetailView({ viewState, handlers }) {
     container.appendChild(description);
     container.appendChild(taskTitle);
     container.appendChild(taskList);
+
+    const formTitle = document.createElement('h3');
+    formTitle.textContent = 'Create new task';
+
+    container.appendChild(formTitle);
+    container.appendChild(TaskFormView({ viewState, handlers }));
+
     container.appendChild(backButton);
 
     return container;

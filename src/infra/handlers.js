@@ -35,6 +35,13 @@ export function createHandlers(dispatch) {
                     newStatus
                 }
             });
+        },
+
+        createTask(taskData) {
+            dispatch({
+                type: 'CREATE_TASK',
+                payload: taskData
+            });
         }
     };
 }
