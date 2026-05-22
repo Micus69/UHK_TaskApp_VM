@@ -3,6 +3,7 @@ import { createHandlers } from '../infra/handlers.js';
 import { ProjectListView } from './views/ProjectListView.js';
 import { ProjectDetailView } from './views/ProjectDetailView.js';
 import { TaskDetailView } from './views/TaskDetailView.js';
+import { UserSwitchView } from './views/UserSwitchView.js';
 
 // Renders the whole application from the current state.
 export function render(root, state, dispatch) {
@@ -21,6 +22,10 @@ export function render(root, state, dispatch) {
 
     const role = document.createElement('p');
     role.textContent = `Logged role: ${viewState.auth.role}`;
+
+    appContainer.appendChild(
+        UserSwitchView({ viewState, handlers })
+    );
 
     appContainer.appendChild(title);
     appContainer.appendChild(status);

@@ -4,6 +4,7 @@ import { enterProjectDetail } from '../actions/enterProjectDetail.js';
 import { enterTaskDetail } from '../actions/enterTaskDetail.js';
 import { changeTaskStatus } from '../actions/changeTaskStatus.js';
 import { createTask } from '../actions/createTask.js';
+import { loginAsUser } from '../actions/loginAsUser.js';
 
 // Interprets actions and delegates business logic.
 export function createDispatcher(store, api) {
@@ -41,6 +42,12 @@ export function createDispatcher(store, api) {
                 return createTask({
                     store,
                     api,
+                    payload: action.payload
+                });
+
+            case 'LOGIN_AS_USER':
+                return loginAsUser({
+                    store,
                     payload: action.payload
                 });
 

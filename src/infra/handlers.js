@@ -42,6 +42,15 @@ export function createHandlers(dispatch) {
                 type: 'CREATE_TASK',
                 payload: taskData
             });
+        },
+
+        loginAsUser(userId) {
+            dispatch({
+                type: 'LOGIN_AS_USER',
+                payload: {
+                    userId
+                }
+            });
         }
     };
 }
