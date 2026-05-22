@@ -31,29 +31,56 @@ export function render(root, state, dispatch) {
     appContainer.appendChild(status);
     appContainer.appendChild(role);
 
-    if (viewState.screen === 'PROJECT_LIST') {
-        appContainer.appendChild(
-            ProjectListView({ viewState, handlers })
-        );
-    } else if (viewState.screen === 'PROJECT_DETAIL') {
-        appContainer.appendChild(
-            ProjectDetailView({ viewState, handlers })
-        );
-    } else {
+    // Renders business error message.
+    if (viewState.errorMessage) {
+
         const error = document.createElement('p');
-        error.textContent = 'Unknown screen.';
+
+        error.textContent =
+            `Error: ${viewState.errorMessage}`;
+
+        error.style.color = 'red';
+
         appContainer.appendChild(error);
     }
 
-    if (viewState.screen === 'TASK_DETAIL') {
+    // Renders success notification.
+    if (viewState.notification) {
+
+        const notification = document.createElement('p');
+
+        notification.textContent =
+            `Success: ${viewState.notification}`;
+
+        notification.style.color = 'green';
+
+        appContainer.appendChild(notification);
+    }
+
+    if (viewState.screen === 'PROJECT_LIST') {
+
+        appContainer.appendChild(
+            ProjectListView({ viewState, handlers })
+        );
+
+    } else if (viewState.screen === 'PROJECT_DETAIL') {
+
+        appContainer.appendChild(
+            ProjectDetailView({ viewState, handlers })
+        );
+
+    } else if (viewState.screen === 'TASK_DETAIL') {
+
         appContainer.appendChild(
             TaskDetailView({ viewState, handlers })
         );
-    }
 
-    if (viewState.errorMessage) {
+    } else {
+
         const error = document.createElement('p');
-        error.textContent = viewState.errorMessage;
+
+        error.textContent = 'Unknown screen.';
+
         appContainer.appendChild(error);
     }
 

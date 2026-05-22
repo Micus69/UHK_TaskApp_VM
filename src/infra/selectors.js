@@ -21,6 +21,7 @@ export function selectViewState(state) {
         screen: state.ui.mode,
         status: state.ui.status,
         errorMessage: state.ui.errorMessage,
+        notification: state.ui.notification,
 
         auth: state.auth,
 
