@@ -5,6 +5,7 @@ export function createInitialState() {
         projects: [],
         tasks: [],
         users: [],
+        taskHistory: [],
 
         // Mocked authentication context.
         auth: {

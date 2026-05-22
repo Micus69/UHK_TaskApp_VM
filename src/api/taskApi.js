@@ -45,6 +45,17 @@ export function createTaskApi() {
         }
     ];
 
+    const taskHistory = [
+        {
+            id: 'h1',
+            taskId: 't1',
+            userId: 'u1',
+            type: 'TASK_CREATED',
+            message: 'Task was created.',
+            createdAt: '2026-05-22 10:00'
+        }
+    ];
+
     let nextTaskId = 2;
 
     // Returns initial application data.
@@ -52,7 +63,8 @@ export function createTaskApi() {
         return structuredClone({
             users,
             projects,
-            tasks
+            tasks,
+            taskHistory
         });
     }
 
@@ -69,10 +81,21 @@ export function createTaskApi() {
             isStatusTransitionAllowed(task.status, newStatus)
         );
 
+        // Stores audit history before status mutation.
+        taskHistory.push({
+            id: `h${taskHistory.length + 1}`,
+            taskId: task.id,
+            userId,
+            type: 'STATUS_CHANGED',
+            message: `Status changed from ${task.status} to ${newStatus}`,
+            createdAt: new Date().toISOString()
+        });
+
         task.status = newStatus;
 
         return structuredClone({
-            tasks
+            tasks,
+            taskHistory
         });
     }
 
@@ -100,10 +123,22 @@ export function createTaskApi() {
         };
 
         nextTaskId += 1;
+
         tasks.push(task);
 
+        // Stores task creation audit record.
+        taskHistory.push({
+            id: `h${taskHistory.length + 1}`,
+            taskId: task.id,
+            userId,
+            type: 'TASK_CREATED',
+            message: `Task "${task.title}" was created.`,
+            createdAt: new Date().toISOString()
+        });
+
         return structuredClone({
-            tasks
+            tasks,
+            taskHistory
         });
     }
 

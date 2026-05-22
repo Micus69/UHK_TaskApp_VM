@@ -19,6 +19,7 @@ export async function appInit({ store, api }) {
             users: data.users,
             projects: data.projects,
             tasks: data.tasks,
+            taskHistory: data.taskHistory,
             auth: {
                 userId: 'u1',
                 role: 'MANAGER'

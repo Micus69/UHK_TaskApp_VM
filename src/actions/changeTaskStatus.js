@@ -12,6 +12,7 @@ export async function changeTaskStatus({ store, api, payload }) {
         store.setState({
             ...currentState,
             tasks: result.tasks,
+            taskHistory: result.taskHistory,
             ui: {
                 ...currentState.ui,
                 notification: 'Task status changed.',

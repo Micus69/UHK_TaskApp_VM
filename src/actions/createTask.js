@@ -16,6 +16,7 @@ export async function createTask({ store, api, payload }) {
         store.setState({
             ...currentState,
             tasks: result.tasks,
+            taskHistory: result.taskHistory,
             ui: {
                 ...currentState.ui,
                 mode: 'PROJECT_DETAIL',

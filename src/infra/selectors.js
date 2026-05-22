@@ -13,6 +13,10 @@ export function selectViewState(state) {
         task.projectId === state.ui.selectedProjectId
     );
 
+    const selectedTaskHistory = state.taskHistory.filter(history =>
+        history.taskId === state.ui.selectedTaskId
+    );
+
     return {
         screen: state.ui.mode,
         status: state.ui.status,
@@ -26,6 +30,7 @@ export function selectViewState(state) {
 
         selectedProject,
         selectedTask,
-        projectTasks
+        projectTasks,
+        selectedTaskHistory
     };
 }
