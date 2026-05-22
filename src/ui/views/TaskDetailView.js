@@ -1,5 +1,27 @@
 import { getNextTaskStatuses } from '../../domain/taskStatusMachine.js';
 
+// Maps business statuses to CSS classes.
+function getStatusClass(status) {
+
+    switch (status) {
+
+        case 'TODO':
+            return 'status-todo';
+
+        case 'IN_PROGRESS':
+            return 'status-in-progress';
+
+        case 'DONE':
+            return 'status-done';
+
+        case 'CANCELED':
+            return 'status-canceled';
+
+        default:
+            return '';
+    }
+}
+
 // Renders task detail screen.
 export function TaskDetailView({ viewState, handlers }) {
 
@@ -17,8 +39,11 @@ export function TaskDetailView({ viewState, handlers }) {
     status.textContent = 'Status: ';
 
     const badge = document.createElement('span');
+
     badge.textContent = task.status;
-    badge.className = 'status-badge';
+
+    badge.className =
+        `status-badge ${getStatusClass(task.status)}`;
 
     status.appendChild(badge);
 

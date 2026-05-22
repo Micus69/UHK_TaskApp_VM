@@ -12,6 +12,14 @@ export function initApp(root) {
 
     store.subscribe((state) => {
         render(root, state, dispatch);
+
+        if (state.ui.errorMessage || state.ui.notification) {
+            setTimeout(() => {
+                dispatch({
+                    type: 'CLEAR_UI_MESSAGE'
+                });
+            }, 3000);
+        }
     });
 
     render(root, store.getState(), dispatch);

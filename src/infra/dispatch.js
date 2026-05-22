@@ -5,6 +5,7 @@ import { enterTaskDetail } from '../actions/enterTaskDetail.js';
 import { changeTaskStatus } from '../actions/changeTaskStatus.js';
 import { createTask } from '../actions/createTask.js';
 import { loginAsUser } from '../actions/loginAsUser.js';
+import { clearUiMessage } from '../actions/clearUiMessage.js';
 
 // Interprets actions and delegates business logic.
 export function createDispatcher(store, api) {
@@ -50,6 +51,9 @@ export function createDispatcher(store, api) {
                     store,
                     payload: action.payload
                 });
+
+            case 'CLEAR_UI_MESSAGE':
+                return clearUiMessage({ store });
 
             default:
                 console.warn(`Unknown action type: ${action.type}`);

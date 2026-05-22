@@ -166,3 +166,24 @@ form button[type="submit"] {
         grid-template-columns: 1fr;
     }
 }
+
+/* Status colors */
+.status-todo {
+    background-color: #9ca3af;
+    color: white;
+}
+
+.status-in-progress {
+    background-color: #f59e0b;
+    color: white;
+}
+
+.status-done {
+    background-color: #16a34a;
+    color: white;
+}
+
+.status-canceled {
+    background-color: #dc2626;
+    color: white;
+}
