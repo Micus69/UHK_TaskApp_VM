@@ -16,6 +16,16 @@ export function ProjectListView({ viewState, handlers }) {
         const description = document.createElement('p');
         description.textContent = project.description;
 
+        const openButton = document.createElement('button');
+
+        openButton.textContent = 'Open project';
+
+        openButton.addEventListener('click', () => {
+            handlers.openProjectDetail(project.id);
+        });
+
+        item.appendChild(openButton);
+
         item.appendChild(name);
         item.appendChild(description);
 

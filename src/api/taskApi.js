@@ -1,4 +1,7 @@
-// Mock API represents the authoritative data source.
+import { canChangeTaskStatus as isStatusTransitionAllowed } from '../domain/taskStatusMachine.js';
+import { canChangeTaskStatus as isUserAllowedToChangeStatus } from '../domain/authorization.js';
+import { assertAuthorized, assertStatusTransition } from '../domain/invariants.js';
+
 export function createTaskApi() {
     const users = [
         { id: 'u1', name: 'Project Manager', role: 'MANAGER' },
@@ -39,7 +42,26 @@ export function createTaskApi() {
         });
     }
 
+    // Changes task status and enforces business rules.
+    async function changeTaskStatus({ userId, taskId, newStatus }) {
+        const user = users.find(user => user.id === userId);
+        const task = tasks.find(task => task.id === taskId);
+
+        assertAuthorized(Boolean(user));
+        assertAuthorized(isUserAllowedToChangeStatus(user, task));
+        assertStatusTransition(
+            isStatusTransitionAllowed(task.status, newStatus)
+        );
+
+        task.status = newStatus;
+
+        return structuredClone({
+            tasks
+        });
+    }
+
     return {
-        getInitialData
+        getInitialData,
+        changeTaskStatus
     };
 }
