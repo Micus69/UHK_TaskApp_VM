@@ -14,7 +14,13 @@ export function TaskDetailView({ viewState, handlers }) {
     description.textContent = task.description;
 
     const status = document.createElement('p');
-    status.textContent = `Status: ${task.status}`;
+    status.textContent = 'Status: ';
+
+    const badge = document.createElement('span');
+    badge.textContent = task.status;
+    badge.className = 'status-badge';
+
+    status.appendChild(badge);
 
     const nextTitle = document.createElement('h3');
     nextTitle.textContent = 'Available status changes';
@@ -57,6 +63,8 @@ export function TaskDetailView({ viewState, handlers }) {
     viewState.selectedTaskHistory.forEach(entry => {
 
         const item = document.createElement('li');
+
+        item.className = 'history-entry';
 
         item.textContent =
             `${entry.type} - ${entry.message}`;

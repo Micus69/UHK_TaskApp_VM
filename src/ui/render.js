@@ -39,7 +39,7 @@ export function render(root, state, dispatch) {
         error.textContent =
             `Error: ${viewState.errorMessage}`;
 
-        error.style.color = 'red';
+        error.className = 'error-message';
 
         appContainer.appendChild(error);
     }
@@ -52,7 +52,7 @@ export function render(root, state, dispatch) {
         notification.textContent =
             `Success: ${viewState.notification}`;
 
-        notification.style.color = 'green';
+        notification.className = 'success-message';
 
         appContainer.appendChild(notification);
     }
