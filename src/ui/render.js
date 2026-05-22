@@ -1,6 +1,13 @@
+import { selectViewState } from '../infra/selectors.js';
+import { createHandlers } from '../infra/handlers.js';
+import { ProjectListView } from './views/ProjectListView.js';
+
 // Renders the whole application from the current state.
 export function render(root, state, dispatch) {
     root.replaceChildren();
+
+    const viewState = selectViewState(state);
+    const handlers = createHandlers(dispatch);
 
     const appContainer = document.createElement('main');
 
@@ -8,37 +15,18 @@ export function render(root, state, dispatch) {
     title.textContent = 'TaskFlow';
 
     const status = document.createElement('p');
-    status.textContent = `Status: ${state.ui.status}`;
+    status.textContent = `Status: ${viewState.status}`;
 
-    const screen = document.createElement('p');
-    screen.textContent = `Current screen: ${state.ui.mode}`;
-
-    const user = document.createElement('p');
-    user.textContent = `Logged user role: ${state.auth.role}`;
-
-    const projectCount = document.createElement('p');
-    projectCount.textContent = `Projects: ${state.projects.length}`;
-
-    const taskCount = document.createElement('p');
-    taskCount.textContent = `Tasks: ${state.tasks.length}`;
-
-    const button = document.createElement('button');
-    button.textContent = 'Open Project List';
-
-    // Dispatches action instead of modifying state directly.
-    button.addEventListener('click', () => {
-        dispatch({
-            type: 'ENTER_PROJECT_LIST'
-        });
-    });
+    const role = document.createElement('p');
+    role.textContent = `Logged role: ${viewState.auth.role}`;
 
     appContainer.appendChild(title);
     appContainer.appendChild(status);
-    appContainer.appendChild(screen);
-    appContainer.appendChild(user);
-    appContainer.appendChild(projectCount);
-    appContainer.appendChild(taskCount);
-    appContainer.appendChild(button);
+    appContainer.appendChild(role);
+
+    if (viewState.screen === 'PROJECT_LIST') {
+        appContainer.appendChild(ProjectListView({ viewState, handlers }));
+    }
 
     root.appendChild(appContainer);
 }
