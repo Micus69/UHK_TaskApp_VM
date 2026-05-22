@@ -1,8 +1,5 @@
-const app = document.getElementById('app');
+import { initApp } from './app/init.js';
 
-const title = document.createElement('h1');
-title.textContent = 'TaskFlow Application';
+const root = document.getElementById('app');
 
-app.appendChild(title);
-
-console.log('Application started');
+initApp(root);
